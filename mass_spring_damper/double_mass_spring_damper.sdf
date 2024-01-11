@@ -1,0 +1,111 @@
+<!-- http://gazebosim.org/tutorials?tut=inertia&cat=build_robot -->
+<!-- <?xml version='1.0'?> -->
+<sdf version="1.4">
+  <model name="msd">
+    <pose>0 0 0.5 0 0 0</pose>
+    <static>false</static>
+
+    <link name="base">
+      <visual name="base_visual">
+        <geometry>
+          <box>
+            <size>0.1 0.1 1</size>
+          </box>
+        </geometry>
+      </visual>
+    </link>
+
+    <link name="mass1">
+      <pose relative_to='base_mass1_joint'>0 1.0 0.0 0 -0 0</pose>
+      <inertial>
+        <mass>1.0</mass>
+        <inertia>
+          <ixx>0.083</ixx>
+          <ixy>0.0</ixy>
+          <ixz>0.0</ixz>
+          <iyy>0.083</iyy>
+          <iyz>0.0</iyz>
+          <izz>0.083</izz>
+        </inertia>
+      </inertial>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>1 0.1 1</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <box>
+            <size>1 0.1 1</size>
+          </box>
+        </geometry>
+      </visual>
+    </link>
+
+    <link name="mass2">
+      <pose relative_to='mass1_mass2_joint'>0 1.0 0.0 0 -0 0</pose>
+      <inertial>
+        <mass>1.0</mass>
+        <inertia>
+          <ixx>0.083</ixx>
+          <ixy>0.0</ixy>
+          <ixz>0.0</ixz>
+          <iyy>0.083</iyy>
+          <iyz>0.0</iyz>
+          <izz>0.083</izz>
+        </inertia>
+      </inertial>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>1 0.1 1</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <box>
+            <size>1 0.1 1</size>
+          </box>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name="base_mass1_joint" type="prismatic">
+      <pose relative_to='base'>0.0 0.0 0.0 0 0 0</pose>
+      <parent>base</parent>
+      <child>mass1</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <dynamics>
+          <spring_reference>0.0</spring_reference>
+          <spring_stiffness>100.0</spring_stiffness>
+          <damping>0.5</damping>
+        </dynamics>
+        <limit>
+          <lower>-1</lower>
+          <upper>1</upper>
+        </limit>
+      </axis>
+    </joint>
+    <joint name="mass1_mass2_joint" type="prismatic">
+      <pose relative_to='mass1'>0.0 0.0 0.0 0 0 0</pose>
+      <parent>mass1</parent>
+      <child>mass2</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <dynamics>
+          <spring_reference>0.0</spring_reference>
+          <spring_stiffness>100.0</spring_stiffness>
+          <damping>0.5</damping>
+        </dynamics>
+        <limit>
+          <lower>-1</lower>
+          <upper>1</upper>
+        </limit>
+      </axis>
+    </joint>
+  </model>
+</sdf>
