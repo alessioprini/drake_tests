@@ -81,8 +81,7 @@ int main() {
     std::string package_name = "deformable";  // Set your package name here.
     std::string package_directory = "..";  // Set the path to your package directory here.
     package_map.PopulateFromFolder(package_directory);
-
-    
+        
     // Add the package map to the parser.
     parser.package_map().AddMap(package_map);
 
@@ -117,7 +116,7 @@ int main() {
     deformable_config.set_stiffness_damping_coefficient(beta);
 
     double scale = 0.01;
-    drake::geometry::Mesh roloc_mesh("/home/prini/Documents/pyDrake/pydrake_tests/deformable/mesh/roloc.vtk", scale);  // Set the path to your mesh file here.
+    drake::geometry::Mesh roloc_mesh(package_map.GetPath(package_name) + "/mesh/roloc.vtk", scale);  // Set the path to your mesh file here.
 
     double kL = 0.09 * scale;
     drake::math::RigidTransform<double> X_WR(drake::math::RotationMatrix<double>(), Eigen::Vector3d(0, 0, 0.5 + kL/2));
@@ -181,12 +180,6 @@ int main() {
 
     int row = 0;
     int col = 0;
-    // Evaluate the PiecewisePolynomial at some values.
-    std::cout << trajectory.value(.5)(row, col) << std::endl;    // Outputs 0.5.
-    std::cout << trajectory.value(0.0)(row, col) << std::endl;    // Outputs 0.0;
-
-    std::cout << trajectory.value(2.5)(row, col) << std::endl;    // Outputs 0.5.
-    std::cout << trajectory.value(5.0)(row, col) << std::endl;    // Outputs 0.0;
 
     auto trajectory_source = builder.AddSystem<drake::systems::TrajectorySource>(trajectory);
 
@@ -204,8 +197,8 @@ int main() {
     builder.Connect(plant_result.plant.get_state_output_port(), pid_controller->get_input_port_estimated_state());
     builder.Connect(pid_controller->get_output_port_control(), plant_result.plant.get_actuation_input_port());
 
-    auto print_state_system = builder.AddSystem<PrintStateSystem>();
-    builder.Connect(trajectory_source->get_output_port(), print_state_system->get_input_port(0));
+    // auto print_state_system = builder.AddSystem<PrintStateSystem>();
+    // builder.Connect(trajectory_source->get_output_port(), print_state_system->get_input_port(0));
 
     builder.Connect(
       model->vertex_positions_port(),
