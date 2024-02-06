@@ -104,6 +104,7 @@
         <limit>
           <lower>-1</lower>
           <upper>1</upper>
+          <effort>1000</effort> 
         </limit>
       </axis>
     </joint>

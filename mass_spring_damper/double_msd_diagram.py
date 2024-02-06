@@ -49,14 +49,25 @@ class MSD(Diagram):
             MeshcatVisualizer.AddToBuilder(self._builder, 
                                        self._scene_graph, meshcat)
 
-        self._builder.ExportInput(self._plant.get_actuation_input_port(),
+        self._actuation_input_port = self._builder.ExportInput(self._plant.get_actuation_input_port(),
                                   "actuation_input_port")
 
-        self._builder.ExportOutput(self._plant.get_state_output_port(),
+        self._state_output_port = self._builder.ExportOutput(self._plant.get_state_output_port(),
                                    "state_output_port")
                
         self._builder.BuildInto(self)
 
+
+    def set_initial_conditions(self, plant_context ,q0 = [0.,0.], v0 = [0.,0.]):
+        x0 = np.hstack((q0, v0))
+        self._plant.SetPositionsAndVelocities(plant_context, x0)
+
+
+    def get_state_output_port(self):
+        return self.get_output_port(self._state_output_port)
+    
+    def get_actuation_input_port(self):
+        return self.get_input_port(self._actuation_input_port)
 
 def main():
     msd = MSD()
